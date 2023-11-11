@@ -79,7 +79,7 @@ export default function MainPage() {
           Cognitive Tracker
         </h1>
         <label className="mb-6 block">
-          <div className="block">Your file:</div>
+          <div className="block">Upload the AFE file here:</div>
           <input className="block" onChange={onFileUpload} type="file" />
         </label>
         <div className="gap grid grid-cols-2 gap-6 ">

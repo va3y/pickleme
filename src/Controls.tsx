@@ -13,7 +13,7 @@ export function Controls(props: {
           .map((_el, i) => {
             const key = ("l" + (i + 1)) as "l1";
             return (
-              <label key={key} className="flex gap-1">
+              <label key={key} className="flex items-center gap-1">
                 {key}
                 <input
                   checked={props.controls?.leftEye?.[key]}
@@ -40,7 +40,7 @@ export function Controls(props: {
             .map((_el, i) => {
               const key = ("l" + (i + 1)) as "l1";
               return (
-                <label key={key} className="flex gap-1">
+                <label key={key} className="flex items-center gap-1">
                   {key}
                   <input
                     checked={props.controls?.rightEye?.[key]}
@@ -60,7 +60,7 @@ export function Controls(props: {
             })}
         </div>
       </div>
-      <label className="my-2 flex gap-2">
+      <label className="my-2 flex items-center gap-4">
         Ambient light
         <input
           type="checkbox"
@@ -73,7 +73,7 @@ export function Controls(props: {
           }
         />
       </label>
-      <label className="flex gap-2">
+      <label className="flex items-center gap-4">
         Temperature
         <input
           type="checkbox"
