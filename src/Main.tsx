@@ -1,12 +1,23 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { ChangeEventHandler, useState } from "react";
+import { LSensorChart } from "~/LSensorChart";
 import { STUB } from "~/stub";
 
-export const ChartComponent = dynamic(() => import("~/Chart"), { ssr: false });
 export type InputJson = {
   afe: { i: number[]; m: [number[]]; t: "L" | "R" }[];
-  hearh: { hr: number };
+  heart?: { hr: number };
+  labels?: string[];
+  auxSensors: {
+    lightAmbient: {
+      v: [
+        number, // UV 1
+        number, // UV 2
+        number, // Ambient light
+        number, // IR 0
+      ];
+    };
+  };
 }[];
 
 // const URL = "http://127.0.0.1:5000/";
@@ -42,8 +53,8 @@ export default function MainPage() {
         <title>Demo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="">
-        <h1>Junction Pixieray demo</h1>
+      <main className="p-4 font-sans">
+        <h1 className="mb-4 font-sans text-xl font-bold">AFE File viewer</h1>
         <div>
           <label>
             Input AFE file here
@@ -52,7 +63,7 @@ export default function MainPage() {
         </div>
         {inputJson && (
           <div>
-            <ChartComponent input={inputJson} />
+            <LSensorChart input={inputJson} />
           </div>
         )}
       </main>
