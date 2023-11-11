@@ -1,3 +1,4 @@
+import { MlResults } from "MlResults";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { ChangeEventHandler, useState } from "react";
@@ -28,6 +29,7 @@ const URL = "https://flask-production-c507.up.railway.app";
 
 export default function MainPage() {
   const [inputJson, setInputJson] = useState<InputJson>(STUB as any);
+  const [serverResponse, setServerResponse] = useState();
 
   const onFileUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
     if (!e.target.files?.length) return;
@@ -45,8 +47,13 @@ export default function MainPage() {
       await fetch(URL, {
         body: JSON.stringify(json),
         method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
       })
     ).json();
+
+    setServerResponse(res);
   };
   return (
     <>
@@ -55,6 +62,8 @@ export default function MainPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="p-4 font-sans">
+        {serverResponse && <MlResults input={serverResponse} />}
+
         <h1 className="mb-4 font-sans text-xl font-bold">AFE File viewer</h1>
         <label className="mb-4 block">
           <div className="block">Your file:</div>
