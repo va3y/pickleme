@@ -51,7 +51,7 @@ const Chart: React.FC<{ input: InputJson }> = (props) => {
   return (
     <div>
       <label>
-        option:
+        L sensor:
         <select value={l} onChange={(e) => setL(Number(e.target.value))}>
           <option>1</option>
           <option>2</option>
