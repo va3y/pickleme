@@ -6,6 +6,7 @@ import { STUB } from "~/stub";
 
 import { Press_Start_2P } from "next/font/google";
 import { Spinner } from "./Spinner";
+import { z } from "zod";
 
 const titleFont = Press_Start_2P({
   weight: "400",
@@ -14,7 +15,7 @@ const titleFont = Press_Start_2P({
 });
 
 export type InputJson = {
-  afe: { i: number[]; m: [number[]]; t: "L" | "R" }[];
+  afe: { i: number[]; m: number[][]; t: "L" | "R" | string }[];
   heart?: { hr: number };
   labels?: string[];
   auxSensors: {
@@ -35,36 +36,54 @@ export type InputJson = {
 // const URL = "http://127.0.0.1:5000/";
 const URL = "https://flask-production-c507.up.railway.app";
 
+const vagueAfeFileSchema = z
+  .object({
+    afe: z.object({}).array(),
+    auxSensors: z.object({}),
+  })
+  .array();
+
 export default function MainPage() {
   const [inputJson, setInputJson] = useState<InputJson>(STUB as any);
   const [serverResponse, setServerResponse] = useState();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const onFileUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    setError("");
+    if (!e.target.files?.[0]) return;
+    let json: InputJson;
+    try {
+      json = await parseJSONFromFile(e.target.files[0]);
+    } catch (error) {
+      return setError("Invalid file format");
+    }
+    console.log(vagueAfeFileSchema.safeParse(json.slice(0, 5)));
+
+    if (!vagueAfeFileSchema.safeParse(json.slice(0, 5)).success)
+      return setError("Invalid file format");
+
     setLoading(true);
     setServerResponse(undefined);
-    if (!e.target.files?.length) return;
-    const fileReader = new FileReader();
-    fileReader.readAsText(e.target.files[0] as File, "UTF-8");
-    const json = await new Promise<InputJson>((res) => {
-      fileReader.onload = (e) => {
-        if (e.target?.result) res(JSON.parse(e.target.result as string));
-      };
-    });
     setInputJson(json);
 
-    const res = await (
-      await fetch(URL, {
-        body: JSON.stringify(json),
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-      })
-    ).json();
+    try {
+      const res = await (
+        await fetch(URL, {
+          body: JSON.stringify(json),
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
+      ).json();
 
-    setServerResponse(res);
-    setLoading(false);
+      setServerResponse(res);
+    } catch (error) {
+      setError("Server error");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
@@ -81,6 +100,7 @@ export default function MainPage() {
         <label className="mb-6 block">
           <div className="block">Upload the AFE file here:</div>
           <input className="block" onChange={onFileUpload} type="file" />
+          {error && <div className="mt-2 text-red-500">{error}</div>}
         </label>
         <div className="gap grid grid-cols-2 gap-6 ">
           <div className="rounded-lg bg-gray-800 p-6">
@@ -98,4 +118,16 @@ export default function MainPage() {
       </main>
     </>
   );
+}
+
+async function parseJSONFromFile(file: File) {
+  const fileReader = new FileReader();
+
+  fileReader.readAsText(file, "UTF-8");
+  const json = await new Promise<InputJson>((res) => {
+    fileReader.onload = (e) => {
+      if (e.target?.result) res(JSON.parse(e.target.result as string));
+    };
+  });
+  return json;
 }

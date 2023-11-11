@@ -82,7 +82,7 @@ export const LSensorChart: React.FC<{ input: InputJson }> = (props) => {
             return {
               label: "left " + key.toUpperCase(),
               data: props.input.map(
-                (el) => el.afe[0]?.m[0][Number(key.slice(1)) - 1],
+                (el) => el.afe[0]?.m[0]?.[Number(key.slice(1)) - 1],
               ),
               borderColor: `rgba(255, 0, 0, ${0.15 * count})`,
             };
@@ -94,7 +94,7 @@ export const LSensorChart: React.FC<{ input: InputJson }> = (props) => {
             return {
               label: "right " + key.toUpperCase(),
               data: props.input.map(
-                (el) => el.afe[1]?.m[0][Number(key.slice(1)) - 1],
+                (el) => el.afe[1]?.m[0]?.[Number(key.slice(1)) - 1],
               ),
               borderColor: `rgba(0, 0, 255, ${0.15 * count})`,
             };
