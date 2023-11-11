@@ -38,7 +38,6 @@ export default function MainPage() {
     fileReader.readAsText(e.target.files[0] as File, "UTF-8");
     const json = await new Promise<InputJson>((res) => {
       fileReader.onload = (e) => {
-        console.log("e.target.result", e.target?.result);
         if (e.target?.result) res(JSON.parse(e.target.result as string));
       };
     });
@@ -68,7 +67,7 @@ export default function MainPage() {
           <div className="block">Your file:</div>
           <input className="block" onChange={onFileUpload} type="file" />
         </label>
-        {serverResponse && <MlResults input={serverResponse} />}
+        {<MlResults input={serverResponse} />}
         {inputJson && (
           <div>
             <LSensorChart input={inputJson} />
