@@ -7,6 +7,7 @@ import { STUB } from "~/stub";
 import { Press_Start_2P } from "next/font/google";
 import { Spinner } from "./Spinner";
 import { z } from "zod";
+import Link from "next/link";
 
 const titleFont = Press_Start_2P({
   weight: "400",
@@ -91,7 +92,7 @@ export default function MainPage() {
         <title>Demo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-8 font-sans">
+      <main className="relative p-8 font-sans">
         <h1
           className={`mb-8 ${titleFont.className} font-sans text-8xl font-bold`}
         >
@@ -115,6 +116,12 @@ export default function MainPage() {
             {loading && <Spinner />}
           </div>
         </div>
+        <Link
+          href="https://github.com/va3y/pickleme"
+          className="absolute right-8 top-8 font-semibold"
+        >
+          GitHub source
+        </Link>
       </main>
     </>
   );
