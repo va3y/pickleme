@@ -67,7 +67,7 @@ export default function MainPage() {
           <div className="block">Your file:</div>
           <input className="block" onChange={onFileUpload} type="file" />
         </label>
-        {<MlResults input={serverResponse} />}
+        {serverResponse && <MlResults input={serverResponse} />}
         {inputJson && (
           <div>
             <LSensorChart input={inputJson} />

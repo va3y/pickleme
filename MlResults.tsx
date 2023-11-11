@@ -52,16 +52,18 @@ export const options = {
 
 export const MlResults: React.FC<{ input: number[] }> = (props) => {
   const res = useMemo(() => {
-    return Object.entries(numberOfOccurances(ML_STUB)).map(([key, value]) => {
-      const sum = Object.values(numberOfOccurances(ML_STUB)).reduce(
-        (acc, curr) => acc + curr,
-        0,
-      );
-      return {
-        label: labels[Number(key)],
-        value: Math.round((value / sum) * 100),
-      };
-    });
+    return Object.entries(numberOfOccurances(props.input)).map(
+      ([key, value]) => {
+        const sum = Object.values(numberOfOccurances(props.input)).reduce(
+          (acc, curr) => acc + curr,
+          0,
+        );
+        return {
+          label: labels[Number(key)],
+          value: Math.round((value / sum) * 100),
+        };
+      },
+    );
   }, [props.input]);
   return (
     <div className="mb-4 max-w-[700px] rounded bg-gray-100 p-4">
