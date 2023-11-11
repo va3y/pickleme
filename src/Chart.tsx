@@ -76,7 +76,7 @@ export const LSensorChart: React.FC<{ input: InputJson }> = (props) => {
             ]
           : []),
         ...Object.entries(controls.leftEye ?? {})
-          .filter(([key, value]) => value)
+          .filter(([_key, value]) => value)
           .map(([key]) => {
             const count = Number(key.slice(1));
             return {
@@ -108,12 +108,23 @@ export const LSensorChart: React.FC<{ input: InputJson }> = (props) => {
       responsive: true,
       elements: { point: { radius: 0 } },
       plugins: {
-        legend: { position: "bottom" },
+        legend: {
+          position: "bottom",
+          labels: {
+            color: "#fff",
+          },
+        },
         title: {
+          color: "rgb(229 231 235)",
           display: true,
           text: props.input.find((el) => el.labels)?.labels?.join(", "),
         },
       },
+      scales: {
+        y: { ticks: { color: "rgb(229 231 235)" } },
+        x: { ticks: { color: "rgb(229 231 235)" } },
+      },
+      color: "#fff",
     };
   }, [props.input]);
 

@@ -4,6 +4,15 @@ import { ChangeEventHandler, useState } from "react";
 import { LSensorChart } from "~/Chart";
 import { STUB } from "~/stub";
 
+import { Press_Start_2P } from "next/font/google";
+import { Spinner } from "./Spinner";
+
+const titleFont = Press_Start_2P({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 export type InputJson = {
   afe: { i: number[]; m: [number[]]; t: "L" | "R" }[];
   heart?: { hr: number };
@@ -29,8 +38,10 @@ const URL = "https://flask-production-c507.up.railway.app";
 export default function MainPage() {
   const [inputJson, setInputJson] = useState<InputJson>(STUB as any);
   const [serverResponse, setServerResponse] = useState();
+  const [loading, setLoading] = useState(false);
 
   const onFileUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    setLoading(true);
     setServerResponse(undefined);
     if (!e.target.files?.length) return;
     const fileReader = new FileReader();
@@ -53,6 +64,7 @@ export default function MainPage() {
     ).json();
 
     setServerResponse(res);
+    setLoading(false);
   };
   return (
     <>
@@ -61,23 +73,26 @@ export default function MainPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="p-8 font-sans">
-        <h1 className="mb-8 font-sans text-7xl font-bold uppercase">
-          Cognitive tracker
+        <h1
+          className={`mb-8 ${titleFont.className} font-sans text-8xl font-bold`}
+        >
+          Cognitive Tracker
         </h1>
-        <label className="mb-8 block">
+        <label className="mb-6 block">
           <div className="block">Your file:</div>
           <input className="block" onChange={onFileUpload} type="file" />
         </label>
         <div className="gap grid grid-cols-2 gap-6 ">
-          <div className="rounded-lg bg-gray-800 p-4">
+          <div className="rounded-lg bg-gray-800 p-6">
             <div className="mb-4 text-4xl font-bold">Sensors</div>
             {inputJson && <LSensorChart input={inputJson} />}
           </div>
-          <div className="mb-4 h-full max-w-[700px] rounded-lg bg-gray-800 p-4">
-            <div className="mb-4 text-4xl font-bold">
+          <div className="relative mb-4 h-full max-w-[700px] rounded-lg bg-gray-800 p-6">
+            <div className="mb-4 text-4xl font-bold capitalize">
               Machine learning analysis
             </div>
             {serverResponse && <MlResults input={serverResponse} />}
+            {loading && <Spinner />}
           </div>
         </div>
       </main>

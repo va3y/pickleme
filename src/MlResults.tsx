@@ -21,16 +21,16 @@ ChartJS.register(
 );
 
 const labels: Record<number, string> = {
-  0: "driving",
-  1: "indoor",
-  2: "walking",
-  3: "badposture",
-  4: "goodposture",
-  5: "meditation",
-  6: "readfocused",
-  7: "readonscreen",
-  8: "readunfocused",
-  9: "videoscreen",
+  0: "Driving",
+  1: "Indoor",
+  2: "Walking",
+  3: "Bad Posture",
+  4: "Good Posture",
+  5: "Meditation",
+  6: "Focused reading",
+  7: "Reading on screen",
+  8: "Unfocused reading",
+  9: "Watching video",
 };
 
 export const options = {
@@ -41,13 +41,13 @@ export const options = {
     },
   },
   responsive: true,
+  scales: {
+    y: { ticks: { color: "rgb(229 231 235)", font: { size: 16 } } },
+    x: { ticks: { color: "rgb(229 231 235)" } },
+  },
   plugins: {
     legend: {
       display: false,
-    },
-    title: {
-      display: true,
-      text: "ML Analysis",
     },
   },
 };
@@ -69,15 +69,11 @@ export const MlResults: React.FC<{ input: number[] }> = (props) => {
   }, [props.input]);
   return (
     <div className="mb-4">
-      {/* {res.map((el) => (
-        <div key={el.label}>
-          {el.label}: {el.value}%
-        </div>
-      ))} */}
       <Bar
         options={options}
         data={{
           labels: res.map((el) => el.label),
+
           datasets: [
             {
               data: res.map((el) => el.value),
