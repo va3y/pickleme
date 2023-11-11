@@ -1,4 +1,4 @@
-const labels = {
+const labels: Record<number, string> = {
   0: "walking",
   1: "driving",
   2: "indoor",
@@ -24,7 +24,8 @@ function numberOfOccurances(arr: number[]) {
 
 export const MlResults: React.FC<{ input: number[] }> = (props) => {
   return (
-    <div>
+    <div className="mb-4 w-max rounded bg-gray-100 p-4">
+      <div className="mb-4 text-xl font-bold">Machine learning analysis</div>
       {Object.entries(numberOfOccurances(props.input)).map(([key, value]) => {
         return (
           <div key={key}>

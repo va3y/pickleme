@@ -32,6 +32,7 @@ export default function MainPage() {
   const [serverResponse, setServerResponse] = useState();
 
   const onFileUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    setServerResponse(undefined);
     if (!e.target.files?.length) return;
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0] as File, "UTF-8");
@@ -62,13 +63,12 @@ export default function MainPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="p-4 font-sans">
-        {serverResponse && <MlResults input={serverResponse} />}
-
         <h1 className="mb-4 font-sans text-xl font-bold">AFE File viewer</h1>
         <label className="mb-4 block">
           <div className="block">Your file:</div>
           <input className="block" onChange={onFileUpload} type="file" />
         </label>
+        {serverResponse && <MlResults input={serverResponse} />}
         {inputJson && (
           <div>
             <LSensorChart input={inputJson} />
