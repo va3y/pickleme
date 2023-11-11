@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { ChangeEventHandler, useState } from "react";
-import { LSensorChart } from "~/LSensorChart";
+import { LSensorChart } from "~/Chart";
 import { STUB } from "~/stub";
 
 export type InputJson = {
@@ -17,16 +17,17 @@ export type InputJson = {
         number, // IR 0
       ];
     };
+    tempEt: {
+      v: [number]; // This is only the first left eye sensor, but whatever
+    };
   };
 }[];
 
 // const URL = "http://127.0.0.1:5000/";
 const URL = "https://flask-production-c507.up.railway.app";
-const Page = () => {};
 
 export default function MainPage() {
   const [inputJson, setInputJson] = useState<InputJson>(STUB as any);
-  const [result, setResult] = useState();
 
   const onFileUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
     if (!e.target.files?.length) return;
@@ -55,12 +56,10 @@ export default function MainPage() {
       </Head>
       <main className="p-4 font-sans">
         <h1 className="mb-4 font-sans text-xl font-bold">AFE File viewer</h1>
-        <div>
-          <label>
-            Input AFE file here
-            <input onChange={onFileUpload} type="file" />
-          </label>
-        </div>
+        <label className="mb-4 block">
+          <div className="block">Your file:</div>
+          <input className="block" onChange={onFileUpload} type="file" />
+        </label>
         {inputJson && (
           <div>
             <LSensorChart input={inputJson} />
