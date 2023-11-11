@@ -68,7 +68,7 @@ export const LSensorChart: React.FC<{ input: InputJson }> = (props) => {
           ? [
               {
                 label: "Temperature",
-                borderColor: `rgba(0, 255, 255, 1)`,
+                borderColor: `rgba(0, 255, 255, 0.5)`,
                 data: props.input.map((el) => {
                   return el.auxSensors.tempEt.v[0];
                 }),

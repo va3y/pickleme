@@ -1,5 +1,4 @@
-import { MlResults } from "MlResults";
-import dynamic from "next/dynamic";
+import { MlResults } from "~/MlResults";
 import Head from "next/head";
 import { ChangeEventHandler, useState } from "react";
 import { LSensorChart } from "~/Chart";
@@ -61,18 +60,26 @@ export default function MainPage() {
         <title>Demo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-4 font-sans">
-        <h1 className="mb-4 font-sans text-xl font-bold">AFE File viewer</h1>
-        <label className="mb-4 block">
+      <main className="p-8 font-sans">
+        <h1 className="mb-8 font-sans text-7xl font-bold uppercase">
+          Cognitive tracker
+        </h1>
+        <label className="mb-8 block">
           <div className="block">Your file:</div>
           <input className="block" onChange={onFileUpload} type="file" />
         </label>
-        {serverResponse && <MlResults input={serverResponse} />}
-        {inputJson && (
-          <div>
-            <LSensorChart input={inputJson} />
+        <div className="gap grid grid-cols-2 gap-6 ">
+          <div className="rounded-lg bg-gray-800 p-4">
+            <div className="mb-4 text-4xl font-bold">Sensors</div>
+            {inputJson && <LSensorChart input={inputJson} />}
           </div>
-        )}
+          <div className="mb-4 h-full max-w-[700px] rounded-lg bg-gray-800 p-4">
+            <div className="mb-4 text-4xl font-bold">
+              Machine learning analysis
+            </div>
+            {serverResponse && <MlResults input={serverResponse} />}
+          </div>
+        </div>
       </main>
     </>
   );

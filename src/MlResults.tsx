@@ -10,7 +10,6 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { ML_STUB } from "~/mlStub";
 
 ChartJS.register(
   CategoryScale,
@@ -22,16 +21,16 @@ ChartJS.register(
 );
 
 const labels: Record<number, string> = {
-  0: "Walking",
-  1: "Driving",
-  2: "Indoor",
-  3: "Good posture",
-  4: "Bad posture",
-  5: "Meditation",
-  6: "Video screen",
-  7: "Reading screen",
-  8: "Reading unfocused",
-  9: "Reading focused",
+  0: "driving",
+  1: "indoor",
+  2: "walking",
+  3: "badposture",
+  4: "goodposture",
+  5: "meditation",
+  6: "readfocused",
+  7: "readonscreen",
+  8: "readunfocused",
+  9: "videoscreen",
 };
 
 export const options = {
@@ -43,6 +42,9 @@ export const options = {
   },
   responsive: true,
   plugins: {
+    legend: {
+      display: false,
+    },
     title: {
       display: true,
       text: "ML Analysis",
@@ -66,8 +68,7 @@ export const MlResults: React.FC<{ input: number[] }> = (props) => {
     );
   }, [props.input]);
   return (
-    <div className="mb-4 max-w-[700px] rounded bg-gray-100 p-4">
-      <div className="mb-4 text-xl font-bold">Machine learning analysis</div>
+    <div className="mb-4">
       {/* {res.map((el) => (
         <div key={el.label}>
           {el.label}: {el.value}%
@@ -77,7 +78,12 @@ export const MlResults: React.FC<{ input: number[] }> = (props) => {
         options={options}
         data={{
           labels: res.map((el) => el.label),
-          datasets: [{ data: res.map((el) => el.value) }],
+          datasets: [
+            {
+              data: res.map((el) => el.value),
+              backgroundColor: `rgba(0, 255, 255, 0.5)`,
+            },
+          ],
         }}
       />
     </div>

@@ -5,11 +5,10 @@ export function Controls(props: {
   setControls(set: (prev: Partial<Controls>) => Partial<Controls>): void;
 }) {
   return (
-    <div className="mb-8 w-max rounded bg-gray-100 p-4">
-      <div className="mb-4 text-xl font-bold">Sensors</div>
+    <div className="mb-8">
       Left eye:
       <div className="flex gap-4 uppercase">
-        {Array(5)
+        {Array(6)
           .fill(null)
           .map((_el, i) => {
             const key = ("l" + (i + 1)) as "l1";
@@ -36,7 +35,7 @@ export function Controls(props: {
       <div>
         Right eye:
         <div className="flex gap-4 uppercase">
-          {Array(5)
+          {Array(6)
             .fill(null)
             .map((_el, i) => {
               const key = ("l" + (i + 1)) as "l1";
